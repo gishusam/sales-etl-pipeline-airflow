@@ -1,24 +1,14 @@
 
-````markdown
-# 🛒 Sales ETL Pipeline (API → PostgreSQL)
+🛒 Sales ETL Pipeline (API → PostgreSQL)
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
-![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=apache-airflow&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+A production-style ETL (Extract, Transform, Load) pipeline that ingests product data from a public REST API, applies schema enforcement and transformations, and loads the data into a PostgreSQL staging table.
 
-A production-style ETL (Extract, Transform, Load) pipeline that ingests product data from a public REST API, applies schema enforcement and transformations, and loads the data into a PostgreSQL (Supabase) staging table.
+This project is designed as a portfolio-ready Data Engineering project, demonstrating modular architecture, structured logging, idempotent database operations, and workflow orchestration.
 
-This project is portfolio-ready, showcasing modular architecture, logging, idempotent database operations, and orchestration concepts, ideal for a Junior Data Engineer role.
-
----
-
-## 🚀 Project Overview
-
-### 📡 Data Source
+ 📡 Data Source
 - Public REST API: [FakeStore API](https://fakestoreapi.com/products)
 
-### 🔄 Pipeline Stages
+🔄 Pipeline Stages
 
 | Stage      | Description |
 |------------|-------------|
@@ -26,7 +16,7 @@ This project is portfolio-ready, showcasing modular architecture, logging, idemp
 | Transform  | Clean, flatten, and enforce schema consistency |
 | Load       | Create tables if needed and upsert into PostgreSQL |
 
----
+
 
 ## 🧱 Architecture
 
