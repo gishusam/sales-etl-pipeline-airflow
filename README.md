@@ -1,41 +1,37 @@
-📊 Sales ETL Pipeline with Airflow
+📊 Sales ETL Pipeline with Apache Airflow
 
-An end-to-end data engineering pipeline that extracts product data from an API, stores raw data in cloud storage, transforms it, and loads it into a PostgreSQL (Supabase) staging table using Apache Airflow, Docker, and Python.
+An end-to-end data engineering pipeline that extracts product data from an external API, stores raw data, transforms it into an analytics-ready structure, and loads it into a PostgreSQL (Supabase) staging table — orchestrated using Apache Airflow and fully containerized with Docker.
 
 🚀 Project Overview
 
-This project demonstrates a modern production-style ETL pipeline:
+This project simulates a production-style ETL workflow:
 
-Extract – Pull product data from FakeStore API
-
-Load (Raw) – Store raw JSON data
-
-Transform – Clean & flatten nested fields
-
+Extract – Retrieve product data from FakeStore API
+Load (Raw) – Persist raw JSON data
+Transform – Clean, flatten, and enrich data
 Load (Staging) – Upsert into PostgreSQL (Supabase)
-
 Orchestration – Managed via Apache Airflow
-
-Containerization – Fully Dockerized
+Infrastructure – Dockerized services
 
 🏗 Architecture
-
-API → Airflow DAG → Raw Storage → Transformation → Supabase (Postgres)
+FakeStore API
+     ↓
+Airflow DAG
+     ↓
+Raw Data Storage (JSON)
+     ↓
+Transformation Layer
+     ↓
+Supabase (PostgreSQL - Staging)
 
 🧰 Tech Stack
 
 Python
-
 Apache Airflow
-
 Docker & Docker Compose
-
 PostgreSQL (Supabase)
-
 FakeStore API
-
 psycopg2
-
 Requests
 
 📂 Project Structure
@@ -62,12 +58,20 @@ sales-etl-pipeline/
 ├── requirements.txt
 ├── .env
 └── README.md
-⚙️ Features
+
+
+│   └── logger.py
+│
+├── requirements.txt
+├── .env
+└── README.md
+⚙️ Key Features
 
 ✔ API data ingestion
 ✔ Raw data persistence
-✔ Schema-on-write staging layer
-✔ Idempotent loads (ON CONFLICT upsert)
+✔ Data transformation & enrichment
+✔ PostgreSQL staging layer
+✔ Idempotent loads (Upserts)
 ✔ Airflow orchestration
 ✔ Dockerized environment
 
@@ -76,15 +80,19 @@ sales-etl-pipeline/
 
 Calls FakeStore API
 
-Saves raw JSON file
+Retrieves product data (JSON)
 
-Returns file path to Airflow
+Stores raw dataset
+
+Passes file path to downstream tasks
 
 2️⃣ Transformation
 
-Flattens nested rating fields
+Flattens nested fields (e.g., ratings)
 
-Adds metadata:
+Standardizes schema
+
+Adds metadata columns:
 
 ingestion_date
 
@@ -94,16 +102,16 @@ loaded_at
 
 Ensures table exists
 
-Bulk inserts using execute_values
+Performs bulk insert
 
-Upserts on conflict
+Uses ON CONFLICT for safe upserts
 
 🐳 Running the Project
 1️⃣ Start Services
 docker compose up --build
 2️⃣ Access Airflow UI
 
-Open:
+Open in browser:
 
 http://localhost:8080
 
@@ -111,7 +119,7 @@ Default credentials:
 
 Username: airflow
 Password: airflow
-3️⃣ Trigger DAG
+3️⃣ Trigger the DAG
 
 DAG Name:
 
@@ -119,37 +127,27 @@ sales_pipeline_raw_ingestion
 
 Click ▶ Trigger
 
-🗄 Database (Supabase)
+🗄 Database (Supabase / PostgreSQL)
 
-Pipeline loads into:
+Data is loaded into:
 
 products_staging
+Schema
 
-Schema includes:
-
-id
-
-title
-
-price
-
-description
-
-category
-
-image
-
-rating_rate
-
-rating_count
-
-ingestion_date
-
-loaded_at
+  id
+  title 
+  price
+  description
+  category
+  image
+  rating_rate
+  rating_count
+  ingestion_date
+  loaded_at
 
 🔐 Environment Variables
 
-Sensitive configs stored in .env:
+Sensitive credentials are stored in .env:
 
 POSTGRES_USER=
 POSTGRES_PASSWORD=
@@ -157,41 +155,37 @@ POSTGRES_DB=
 DB_URL=
 📈 Production Concepts Demonstrated
 
-✅ Data Lake (Raw layer)
+✅ Data Lake (Raw Layer)
 ✅ Staging Layer
 ✅ Idempotent Loads
-✅ Metadata Columns
-✅ Orchestration
-✅ Containerized Infra
+✅ Schema-on-write
+✅ Metadata Tracking
+✅ Workflow Orchestration
+✅ Containerized Infrastructure
 
 🎯 Learning Objectives
 
-This project was built to practice:
+This project was built to strengthen skills in:
 
-Airflow DAG design
-
-Dockerized pipelines
-
-API ingestion
-
+Apache Airflow DAG design
+Dockerized data pipelines
+API ingestion patterns
 Data transformation
-
 PostgreSQL loading
+Production ETL best practices
 
-Production ETL patterns
-
-🚧 Future Improvements
+🚧 Future Enhancements
 
 ⬜ Data quality checks
-⬜ Warehouse layer
-⬜ Incremental loads
-⬜ Partitioning strategy
-⬜ Monitoring & alerts
+⬜ Data warehouse layer
+⬜ Incremental loading strategy
+⬜ Partitioning & indexing
+⬜ Monitoring & alerting
 ⬜ CI/CD pipeline
 
 👨‍💻 Author
 
 Samwel Ngugi
+Junior Data Engineer
 
-Aspiring Data Engineer
-Focused on building production-grade data pipelines
+Focused on designing and building production-grade data pipelines
