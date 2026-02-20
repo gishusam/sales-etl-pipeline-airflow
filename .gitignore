@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Environment variables
+.env
+
+# Airflow
+logs/
+airflow/logs/
+airflow/airflow.db
+
+# MacOS
+.DS_Store
+
+# Data files (optional)
