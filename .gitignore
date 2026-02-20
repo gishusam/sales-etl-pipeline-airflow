@@ -13,5 +13,7 @@ airflow/airflow.db
 
 # MacOS
 .DS_Store
+credentials.json
+*.json
+.env
 
-# Data files (optional)
