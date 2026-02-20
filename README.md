@@ -1,191 +1,171 @@
-📊 Sales ETL Pipeline with Apache Airflow
+🛒 Sales ETL Pipeline (API → PostgreSQL)
 
-An end-to-end data engineering pipeline that extracts product data from an external API, stores raw data, transforms it into an analytics-ready structure, and loads it into a PostgreSQL (Supabase) staging table — orchestrated using Apache Airflow and fully containerized with Docker.
+A production-style ETL (Extract, Transform, Load) pipeline that ingests product data from a public REST API, applies schema enforcement and transformations, and loads the data into a PostgreSQL (Supabase) staging table.
+
+This project is designed as a portfolio-ready Data Engineering project, showcasing modular architecture, logging, idempotent database operations, and orchestration concepts.
 
 🚀 Project Overview
+📡 Data Source
 
-This project simulates a production-style ETL workflow:
+Public REST API:
+https://fakestoreapi.com/products
 
-Extract – Retrieve product data from FakeStore API
-Load (Raw) – Persist raw JSON data
-Transform – Clean, flatten, and enrich data
-Load (Staging) – Upsert into PostgreSQL (Supabase)
-Orchestration – Managed via Apache Airflow
-Infrastructure – Dockerized services
+🔄 Pipeline Stages
 
-🏗 Architecture
+1️⃣ Extract
+Fetch raw JSON data from the API
+
+2️⃣ Transform
+Clean, flatten, and enforce schema consistency
+
+3️⃣ Load
+Create tables (if needed) and upsert into PostgreSQL
+
+🧱 Architecture
 FakeStore API
      ↓
-Airflow DAG
+Extraction Layer (Python)
      ↓
-Raw Data Storage (JSON)
+Raw Data (JSON)
      ↓
 Transformation Layer
      ↓
-Supabase (PostgreSQL - Staging)
-
-🧰 Tech Stack
-
-Python
-Apache Airflow
-Docker & Docker Compose
-PostgreSQL (Supabase)
-FakeStore API
-psycopg2
-Requests
+PostgreSQL (Supabase - Staging)
 
 📂 Project Structure
+
 sales-etl-pipeline/
 │
-├── airflow/
+├── airflow/ 🛠️
 │   └── dags/
-│       └── sales_ingestion_dag.py
+│       └── sales_ingestion_dag.py   # Airflow DAG for pipeline orchestration
 │
-├── ingestion/
-│   ├── extraction.py
-│   └── transformation.py
+├── ingestion/ 🔄
+│   ├── extraction.py                 # Extract data from API
+│   └── transformation.py             # Transform & clean data
 │
-├── docker/
+├── docker/ 🐳
 │   ├── Dockerfile
 │   └── docker-compose.yml
 │
-├── data/
-│   └── raw/
+├── data/ 📦
+│   └── raw/                          # Raw JSON files (optional)
 │
-├── utils/
-│   └── logger.py
+├── utils/ ⚙️
+│   └── logger.py                     # Centralized logging
 │
-├── requirements.txt
-├── .env
-└── README.md
+├── requirements.txt                  # Python dependencies
+├── .env                              # Environment variables
+└── README.md                         # Project documentation
 
+🧠 Key Features
 
-│   └── logger.py
-│
-├── requirements.txt
-├── .env
-└── README.md
-⚙️ Key Features
+✅ Modular ETL design (extract / transform / load)
+✅ Apache Airflow orchestration
+✅ Centralized structured logging
+✅ Schema enforcement & data typing
+✅ Idempotent table creation
+✅ Bulk inserts with UPSERT logic
+✅ Dockerized environment
 
-✔ API data ingestion
-✔ Raw data persistence
-✔ Data transformation & enrichment
-✔ PostgreSQL staging layer
-✔ Idempotent loads (Upserts)
-✔ Airflow orchestration
-✔ Dockerized environment
+🗄️ Database Schema
 
-🔄 Pipeline Workflow
-1️⃣ Extraction
+Table: products_staging
 
-Calls FakeStore API
+🗄️ Database Schema
 
-Retrieves product data (JSON)
+Table: `products_staging`
 
-Stores raw dataset
+| Column          | Type       | Description                     |
+|-----------------|-----------|---------------------------------|
+| id              | INTEGER   | Product ID (Primary Key)        |
+| title           | TEXT      | Product name                    |
+| price           | NUMERIC   | Product price                   |
+| description     | TEXT      | Product description             |
+| category        | TEXT      | Product category                |
+| image           | TEXT      | Product image URL               |
+| rating_rate     | NUMERIC   | Average rating                  |
+| rating_count    | INTEGER   | Number of ratings               |
+| ingestion_date  | DATE      | Pipeline ingestion date         |
+| loaded_at       | TIMESTAMP | Load timestamp                  |
 
-Passes file path to downstream tasks
+⚙️ Setup & Installation
+1️⃣ Clone Repository
+git clone https://github.com/your-username/sales-etl-pipeline.git
+cd sales-etl-pipeline
 
-2️⃣ Transformation
+2️⃣ Create Virtual Environment
+python3 -m venv venv
+source venv/bin/activate
 
-Flattens nested fields (e.g., ratings)
+3️⃣ Install Dependencies
+pip install -r requirements.txt
 
-Standardizes schema
+4️⃣ Configure Environment Variables
 
-Adds metadata columns:
+Create a .env file:
 
-ingestion_date
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=sales_etl
+DB_URL=postgresql://postgres:your_password@localhost:5432/sales_etl
 
-loaded_at
-
-3️⃣ Load to Staging
-
-Ensures table exists
-
-Performs bulk insert
-
-Uses ON CONFLICT for safe upserts
-
-🐳 Running the Project
-1️⃣ Start Services
+🐳 Running with Docker (Recommended)
+Start Services
 docker compose up --build
-2️⃣ Access Airflow UI
-
-Open in browser:
-
+Access Airflow UI
 http://localhost:8080
 
 Default credentials:
 
 Username: airflow
 Password: airflow
-3️⃣ Trigger the DAG
+Trigger DAG
 
-DAG Name:
+DAG ID:
 
 sales_pipeline_raw_ingestion
 
 Click ▶ Trigger
 
-🗄 Database (Supabase / PostgreSQL)
+▶️ Running Locally (Without Airflow)
+python main.py
+✅ Expected Output
+INFO - ===== ETL Pipeline Started =====
+INFO - Successfully extracted 20 records
+INFO - Transformation completed
+INFO - Connected to database successfully
+INFO - Table 'products_staging' is ready
+INFO - Loaded 20 records
+INFO - ===== ETL Pipeline Completed Successfully =====
+🔍 Verifying the Data
+SELECT COUNT(*) FROM products_staging;
+SELECT * FROM products_staging LIMIT 5;
+🧪 Possible Enhancements
 
-Data is loaded into:
+🔁 Incremental loading strategy
+📊 Data quality checks
+🧪 Unit tests
+📦 Data warehouse layer
+📈 Monitoring & alerts
+☁️ Cloud deployment (GCP / AWS / Azure)
 
-products_staging
-Schema
+🎯 Why This Project Matters
 
-  id
-  title 
-  price
-  description
-  category
-  image
-  rating_rate
-  rating_count
-  ingestion_date
-  loaded_at
+This project demonstrates:
 
-🔐 Environment Variables
+✔ Real-world ETL architecture
+✔ Production-style PostgreSQL loading
+✔ Data transformation & schema enforcement
+✔ Airflow orchestration
+✔ Containerized data stack
 
-Sensitive credentials are stored in .env:
+It reflects practical skills used by Data Engineers in production environments.
 
-POSTGRES_USER=
-POSTGRES_PASSWORD=
-POSTGRES_DB=
-DB_URL=
-📈 Production Concepts Demonstrated
-
-✅ Data Lake (Raw Layer)
-✅ Staging Layer
-✅ Idempotent Loads
-✅ Schema-on-write
-✅ Metadata Tracking
-✅ Workflow Orchestration
-✅ Containerized Infrastructure
-
-🎯 Learning Objectives
-
-This project was built to strengthen skills in:
-
-Apache Airflow DAG design
-Dockerized data pipelines
-API ingestion patterns
-Data transformation
-PostgreSQL loading
-Production ETL best practices
-
-🚧 Future Enhancements
-
-⬜ Data quality checks
-⬜ Data warehouse layer
-⬜ Incremental loading strategy
-⬜ Partitioning & indexing
-⬜ Monitoring & alerting
-⬜ CI/CD pipeline
-
-👨‍💻 Author
+👤 Author
 
 Samwel Ngugi
-Junior Data Engineer
+junior Data Engineer
+Python | SQL | Airflow | ETL | Docker
 
-Focused on designing and building production-grade data pipelines
+⭐ If you found this project interesting, feel free to star the repository!
