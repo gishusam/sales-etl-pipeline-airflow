@@ -1,27 +1,36 @@
-🛒 Sales ETL Pipeline (API → PostgreSQL)
+
+````markdown
+# 🛒 Sales ETL Pipeline (API → PostgreSQL)
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=apache-airflow&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
 A production-style ETL (Extract, Transform, Load) pipeline that ingests product data from a public REST API, applies schema enforcement and transformations, and loads the data into a PostgreSQL (Supabase) staging table.
 
-This project is designed as a portfolio-ready Data Engineering project, showcasing modular architecture, logging, idempotent database operations, and orchestration concepts.
+This project is portfolio-ready, showcasing modular architecture, logging, idempotent database operations, and orchestration concepts, ideal for a Junior Data Engineer role.
 
-🚀 Project Overview
-📡 Data Source
+---
 
-Public REST API:
-https://fakestoreapi.com/products
+## 🚀 Project Overview
 
-🔄 Pipeline Stages
+### 📡 Data Source
+- Public REST API: [FakeStore API](https://fakestoreapi.com/products)
 
-1️⃣ Extract
-Fetch raw JSON data from the API
+### 🔄 Pipeline Stages
 
-2️⃣ Transform
-Clean, flatten, and enforce schema consistency
+| Stage      | Description |
+|------------|-------------|
+| Extract    | Fetch raw JSON data from the API |
+| Transform  | Clean, flatten, and enforce schema consistency |
+| Load       | Create tables if needed and upsert into PostgreSQL |
 
-3️⃣ Load
-Create tables (if needed) and upsert into PostgreSQL
+---
 
-🧱 Architecture
+## 🧱 Architecture
+
+```text
 FakeStore API
      ↓
 Extraction Layer (Python)
@@ -31,106 +40,130 @@ Raw Data (JSON)
 Transformation Layer
      ↓
 PostgreSQL (Supabase - Staging)
+````
 
-📂 Project Structure
+---
 
+## 📂 Project Structure
+
+```text
 sales-etl-pipeline/
 │
 ├── airflow/ 🛠️
 │   └── dags/
-│       └── sales_ingestion_dag.py   # Airflow DAG for pipeline orchestration
+│       └── sales_ingestion_dag.py     # Airflow DAG for pipeline orchestration
 │
 ├── ingestion/ 🔄
-│   ├── extraction.py                 # Extract data from API
-│   └── transformation.py             # Transform & clean data
+│   ├── extraction.py                   # Extract data from API
+│   └── transformation.py               # Transform and clean data
 │
 ├── docker/ 🐳
 │   ├── Dockerfile
 │   └── docker-compose.yml
 │
 ├── data/ 📦
-│   └── raw/                          # Raw JSON files (optional)
+│   └── raw/                            # Raw JSON files (optional)
 │
 ├── utils/ ⚙️
-│   └── logger.py                     # Centralized logging
+│   └── logger.py                        # Centralized logging
 │
-├── requirements.txt                  # Python dependencies
-├── .env                              # Environment variables
-└── README.md                         # Project documentation
+├── requirements.txt                     # Python dependencies
+├── .env                                 # Environment variables
+└── README.md                            # Project documentation
+```
 
-🧠 Key Features
+---
 
-✅ Modular ETL design (extract / transform / load)
-✅ Apache Airflow orchestration
-✅ Centralized structured logging
-✅ Schema enforcement & data typing
-✅ Idempotent table creation
-✅ Bulk inserts with UPSERT logic
-✅ Dockerized environment
+## 🧠 Key Features
 
-🗄️ Database Schema
+* Modular ETL design (Extract / Transform / Load)
+* Apache Airflow orchestration
+* Centralized structured logging
+* Schema enforcement and data typing
+* Idempotent table creation
+* Bulk inserts with UPSERT logic
+* Dockerized environment
 
-Table: products_staging
+---
 
-🗄️ Database Schema
+## 🗄️ Database Schema
 
-Table: `products_staging`
+**Table:** products_staging
 
-| Column          | Type       | Description                     |
-|-----------------|-----------|---------------------------------|
-| id              | INTEGER   | Product ID (Primary Key)        |
-| title           | TEXT      | Product name                    |
-| price           | NUMERIC   | Product price                   |
-| description     | TEXT      | Product description             |
-| category        | TEXT      | Product category                |
-| image           | TEXT      | Product image URL               |
-| rating_rate     | NUMERIC   | Average rating                  |
-| rating_count    | INTEGER   | Number of ratings               |
-| ingestion_date  | DATE      | Pipeline ingestion date         |
-| loaded_at       | TIMESTAMP | Load timestamp                  |
+| Column         | Type      | Description              |
+| -------------- | --------- | ------------------------ |
+| id             | INTEGER   | Product ID (Primary Key) |
+| title          | TEXT      | Product name             |
+| price          | NUMERIC   | Product price            |
+| description    | TEXT      | Product description      |
+| category       | TEXT      | Product category         |
+| image          | TEXT      | Product image URL        |
+| rating_rate    | NUMERIC   | Average rating           |
+| rating_count   | INTEGER   | Number of ratings        |
+| ingestion_date | DATE      | Pipeline ingestion date  |
+| loaded_at      | TIMESTAMP | Load timestamp           |
 
-⚙️ Setup & Installation
-1️⃣ Clone Repository
+---
+
+## ⚙️ Setup & Installation
+
+### 1️⃣ Clone Repository
+
+```bash
 git clone https://github.com/your-username/sales-etl-pipeline.git
 cd sales-etl-pipeline
+```
 
-2️⃣ Create Virtual Environment
+### 2️⃣ Create Virtual Environment
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
+```
 
-3️⃣ Install Dependencies
+### 3️⃣ Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-4️⃣ Configure Environment Variables
+### 4️⃣ Configure Environment Variables
 
 Create a .env file:
 
+```env
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=your_password
 POSTGRES_DB=sales_etl
 DB_URL=postgresql://postgres:your_password@localhost:5432/sales_etl
+```
 
-🐳 Running with Docker (Recommended)
-Start Services
+---
+
+## 🐳 Running with Docker (Recommended)
+
+```bash
 docker compose up --build
-Access Airflow UI
-http://localhost:8080
+```
 
-Default credentials:
+Access Airflow UI: [http://localhost:8080](http://localhost:8080)
+Default credentials: airflow / airflow
 
-Username: airflow
-Password: airflow
-Trigger DAG
+Trigger DAG: sales_pipeline_raw_ingestion and click Trigger
 
-DAG ID:
+---
 
-sales_pipeline_raw_ingestion
+## ▶️ Running Locally (Without Airflow)
 
-Click ▶ Trigger
-
-▶️ Running Locally (Without Airflow)
+```bash
 python main.py
-✅ Expected Output
+```
+
+---
+
+## ✅ Expected Output
+
+```text
 INFO - ===== ETL Pipeline Started =====
 INFO - Successfully extracted 20 records
 INFO - Transformation completed
@@ -138,34 +171,49 @@ INFO - Connected to database successfully
 INFO - Table 'products_staging' is ready
 INFO - Loaded 20 records
 INFO - ===== ETL Pipeline Completed Successfully =====
-🔍 Verifying the Data
+```
+
+---
+
+## 🔍 Verifying the Data
+
+```sql
 SELECT COUNT(*) FROM products_staging;
 SELECT * FROM products_staging LIMIT 5;
-🧪 Possible Enhancements
+```
 
-🔁 Incremental loading strategy
-📊 Data quality checks
-🧪 Unit tests
-📦 Data warehouse layer
-📈 Monitoring & alerts
-☁️ Cloud deployment (GCP / AWS / Azure)
+---
 
-🎯 Why This Project Matters
+## 🧪 Possible Enhancements
+
+* Incremental loading strategy
+* Data quality checks
+* Unit and integration tests
+* Data warehouse layer
+* Monitoring and alerts
+* Cloud deployment (GCP / AWS / Azure)
+
+---
+
+## 🎯 Why This Project Matters
 
 This project demonstrates:
 
-✔ Real-world ETL architecture
-✔ Production-style PostgreSQL loading
-✔ Data transformation & schema enforcement
-✔ Airflow orchestration
-✔ Containerized data stack
+* Real-world ETL architecture
+* Production-style PostgreSQL loading
+* Data transformation and schema enforcement
+* Airflow orchestration
+* Containerized data stack
 
 It reflects practical skills used by Data Engineers in production environments.
 
-👤 Author
+---
 
-Samwel Ngugi
-junior Data Engineer
+## 👤 Author
+
+Samwel Ngugi – Junior Data Engineer
 Python | SQL | Airflow | ETL | Docker
 
-⭐ If you found this project interesting, feel free to star the repository!
+If you found this project interesting, feel free to star the repository!
+
+
